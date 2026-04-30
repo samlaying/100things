@@ -71,10 +71,10 @@ function App() {
       )}
 
       {/* Footer */}
-      <footer className="relative z-10 bg-[#24201B]/5 border-t border-[#24201B]/10 py-8 mt-12">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <p className="text-[#24201B]/60">
-            © 2024 AI Playground · 用 AI 解决生活中的小事
+      <footer className="relative z-10 text-center py-12 mt-12">
+        <div className="max-w-[1180px] mx-auto px-4">
+          <p className="font-hand text-2xl text-[#2b2925]">
+            记录生活，热爱生活，AI 让一切更美好！💖
           </p>
         </div>
       </footer>

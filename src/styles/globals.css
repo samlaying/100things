@@ -5,9 +5,30 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    /* 手帐拼贴风颜色系统 */
+    --page-bg: #f7efdf;
+    --paper-bg: #fff8ea;
+    --text-primary: #221e1a;
+    --text-secondary: #34302a;
+
+    /* 卡片颜色 - 柔和高饱和 */
+    --yellow: #ffd84d;
+    --green: #9fe3b9;
+    --pink: #ff8fa8;
+    --purple: #b99cff;
+    --blue: #93cdf4;
+    --orange: #ffad63;
+    --paper: #f7ead1;
+    --black: #221e1a;
+
+    /* 装饰色 */
+    --red: #ff6878;
+  }
+
   body {
-    background-color: #FFF8E8;
-    color: #24201B;
+    background-color: var(--page-bg);
+    color: var(--text-primary);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
@@ -19,8 +40,8 @@
     position: fixed;
     inset: 0;
     pointer-events: none;
-    background-image: url("/textures/noise.png");
-    opacity: 0.08;
+    background-image: radial-gradient(circle at 2px 2px, rgba(0,0,0,0.03) 1px, transparent 0);
+    background-size: 24px 24px;
     z-index: 0;
   }
 
@@ -30,38 +51,75 @@
 }
 
 @layer components {
-  /* 卡片基础样式 */
+  /* 手帐拼贴风卡片基础样式 */
   .card {
     position: relative;
-    border-radius: 28px;
-    padding: 1.5rem;
+    border-radius: 22px;
+    padding: 24px;
     overflow: hidden;
-    box-shadow: 0 12px 28px rgba(35, 31, 25, 0.12);
+    box-shadow: 0 10px 22px rgba(60, 45, 25, 0.14);
     transition: all 0.3s ease;
     break-inside: avoid;
-    margin-bottom: 20px;
+    margin-bottom: 0;
+    min-height: 190px;
   }
 
   .card:hover {
-    box-shadow: 0 16px 32px rgba(35, 31, 25, 0.18);
-    transform: translateY(-6px) rotate(-1deg);
+    box-shadow: 0 16px 32px rgba(60, 45, 25, 0.20);
+    transform: translateY(-4px) rotate(calc(-1deg + var(--rotation, 0deg)));
   }
 
-  /* 瀑布流布局 */
-  .masonry {
-    column-count: 4;
-    column-gap: 20px;
+  /* 拼贴网格布局 */
+  .collage-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 18px;
+    max-width: 1180px;
+    margin: 0 auto;
+  }
+
+  /* 卡片尺寸变体 */
+  .card-lg {
+    grid-column: span 4;
+    min-height: 250px;
+  }
+
+  .card-sm {
+    grid-column: span 3;
+    min-height: 210px;
+  }
+
+  .card-wide {
+    grid-column: span 6;
+    min-height: 220px;
   }
 
   @media (max-width: 1024px) {
-    .masonry {
-      column-count: 2;
+    .collage-grid {
+      grid-template-columns: repeat(6, 1fr);
+      gap: 12px;
+    }
+
+    .card-lg {
+      grid-column: span 3;
+    }
+
+    .card-sm {
+      grid-column: span 2;
+    }
+
+    .card-wide {
+      grid-column: span 6;
     }
   }
 
   @media (max-width: 640px) {
-    .masonry {
-      column-count: 1;
+    .collage-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .card-lg, .card-sm, .card-wide {
+      grid-column: span 1;
     }
   }
 
@@ -70,46 +128,71 @@
     font-family: 'Ma Shan Zheng', cursive;
   }
 
-  /* 按钮样式 */
+  /* 手帐风格按钮 */
   .btn-primary {
     padding: 0.75rem 1.5rem;
-    border-radius: 9999px;
-    font-weight: 500;
+    border-radius: 999px;
+    font-weight: 600;
     transition: all 0.3s ease;
-    background-color: #24201B;
-    color: #FFF8E8;
+    background-color: var(--black);
+    color: var(--page-bg);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 
   .btn-primary:hover {
-    background-color: rgba(36, 32, 27, 0.9);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    transform: translateY(-0.25rem);
+    background-color: rgba(34, 30, 26, 0.9);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
   }
 
   .btn-secondary {
     padding: 0.75rem 1.5rem;
-    border-radius: 9999px;
-    font-weight: 500;
+    border-radius: 999px;
+    font-weight: 600;
     transition: all 0.3s ease;
-    background-color: #FFF8E8;
-    color: #24201B;
-    border: 2px solid #24201B;
+    background-color: rgba(255, 255, 255, 0.6);
+    color: var(--black);
+    border: 2px solid rgba(34, 30, 26, 0.2);
   }
 
   .btn-secondary:hover {
-    background-color: #24201B;
-    color: #FFF8E8;
+    background-color: var(--black);
+    color: var(--page-bg);
+    border-color: var(--black);
   }
 
-  /* 标签样式 */
+  /* 手帐风格标签 */
   .tag {
     display: inline-block;
-    padding: 0.25rem 0.75rem;
-    border-radius: 9999px;
-    font-size: 0.875rem;
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-size: 12px;
     font-weight: 500;
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.35);
     backdrop-filter: blur(4px);
+  }
+
+  /* 手帐胶囊按钮 */
+  .capsule-btn {
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: 2px solid rgba(34, 30, 26, 0.15);
+    background-color: rgba(255, 255, 255, 0.5);
+    color: var(--text-primary);
+  }
+
+  .capsule-btn:hover {
+    background-color: rgba(255, 255, 255, 0.8);
+    transform: translateY(-1px);
+  }
+
+  .capsule-btn.active {
+    background-color: var(--black);
+    color: var(--page-bg);
+    border-color: var(--black);
   }
 
   /* 模态框样式 */

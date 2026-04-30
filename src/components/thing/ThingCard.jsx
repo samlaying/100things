@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Copy, Check, ChevronRight, Star } from 'lucide-react';
+import { Copy, Check, ChevronRight } from 'lucide-react';
 
 const ThingCard = ({ thing, onClick, onCopyPrompt }) => {
   const [copied, setCopied] = useState(false);
@@ -16,86 +16,38 @@ const ThingCard = ({ thing, onClick, onCopyPrompt }) => {
     }
   };
 
-  const getCardSizeClass = () => {
-    switch (thing.cardType) {
-      case 'large':
-        return 'row-span-2';
-      case 'wide':
-        return 'col-span-2';
-      case 'mini':
-        return 'row-span-1';
-      default:
-        return '';
-    }
-  };
-
   return (
     <div
-      className={`card cursor-pointer ${getCardSizeClass()}`}
+      className="card cursor-pointer"
       style={{
         backgroundColor: thing.bgColor,
         color: thing.textColor
       }}
       onClick={() => onClick(thing)}
     >
-      {/* Number Badge */}
-      <div className="absolute top-4 right-4 font-bold text-2xl opacity-30 font-hand">
+      {/* 编号圆圈 */}
+      <div className="absolute top-[24px] left-[24px] w-[34px] h-[34px] rounded-full bg-[#211d19] text-white flex items-center justify-center font-extrabold text-[15px] z-20">
         {thing.number}
       </div>
 
-      {/* Decorative Stickers */}
-      {thing.stickers && thing.stickers.length > 0 && (
-        <>
-          {thing.stickers.map((sticker, index) => (
-            <div
-              key={index}
-              className="absolute w-16 h-16 opacity-60 animate-float"
-              style={{
-                [index === 0 ? 'top' : 'bottom']: index === 0 ? '10px' : '10px',
-                [index === 0 ? 'left' : 'right']: index === 0 ? '10px' : '10px',
-                animationDelay: `${index * 0.5}s`
-              }}
-            >
-              <img
-                src={sticker}
-                alt={`sticker-${index}`}
-                className="w-full h-full object-contain"
-              />
-            </div>
-          ))}
-        </>
-      )}
-
-      {/* Content */}
-      <div className="relative z-10">
-        {/* Icon */}
-        {thing.icon && (
-          <div className="w-12 h-12 mb-4 bg-white/30 rounded-xl flex items-center justify-center backdrop-blur-sm">
-            <img src={thing.icon} alt={thing.title} className="w-6 h-6" />
-          </div>
-        )}
-
-        {/* Category Tag */}
+      {/* 卡片内容区域 */}
+      <div className="relative z-10 w-[55%] mt-[18px]">
+        {/* 分类标签 */}
         <div className="tag mb-3">
           {thing.category}
         </div>
 
-        {/* Title */}
-        <h3 className="text-xl font-bold mb-2">
+        {/* 标题 */}
+        <h3 className="text-[21px] leading-[1.35] mb-[12px] text-[#171411] font-bold">
           {thing.title}
         </h3>
 
-        {/* Subtitle */}
-        <p className="text-sm opacity-80 mb-3">
-          {thing.subtitle}
-        </p>
-
-        {/* Description */}
-        <p className="text-sm opacity-70 mb-4 line-clamp-2">
+        {/* 描述 */}
+        <p className="text-[14px] leading-[1.65] text-[#312b25] mb-4">
           {thing.description}
         </p>
 
-        {/* Action */}
+        {/* 操作区域 */}
         <div className="flex items-center justify-between">
           <button
             className="flex items-center space-x-1 text-sm font-medium opacity-70 hover:opacity-100 transition-opacity"
@@ -122,12 +74,38 @@ const ThingCard = ({ thing, onClick, onCopyPrompt }) => {
         </div>
       </div>
 
-      {/* Featured Badge */}
-      {thing.cardType === 'large' && (
-        <div className="absolute top-4 left-4 flex items-center space-x-1 bg-white/40 rounded-full px-3 py-1 backdrop-blur-sm">
-          <Star className="w-3 h-3" />
-          <span className="text-xs font-medium">推荐</span>
+      {/* 贴纸图片 - 固定在右侧 */}
+      {thing.image && (
+        <div className="absolute right-[16px] bottom-[12px] w-[43%] max-h-[165px] z-1 object-contain">
+          <img
+            src={thing.image}
+            alt={thing.title}
+            className="w-full h-full object-contain"
+          />
         </div>
+      )}
+
+      {/* 装饰贴纸 */}
+      {thing.stickers && thing.stickers.length > 0 && (
+        <>
+          {thing.stickers.map((sticker, index) => (
+            <div
+              key={index}
+              className="absolute w-16 h-16 opacity-60 animate-float z-0"
+              style={{
+                [index === 0 ? 'top' : 'bottom']: index === 0 ? '10px' : '10px',
+                [index === 0 ? 'left' : 'right']: index === 0 ? '10px' : '10px',
+                animationDelay: `${index * 0.5}s`
+              }}
+            >
+              <img
+                src={sticker}
+                alt={`sticker-${index}`}
+                className="w-full h-full object-contain"
+              />
+            </div>
+          ))}
+        </>
       )}
     </div>
   );

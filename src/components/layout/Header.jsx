@@ -1,57 +1,41 @@
-import { useState } from 'react';
-import { Menu, X, Sparkles } from 'lucide-react';
+import { Sparkles, User } from 'lucide-react';
 
-const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+const Header = ({ onRandomPick }) => {
   return (
-    <header className="sticky top-0 z-40 bg-[#FFF8E8]/80 backdrop-blur-md border-b border-[#24201B]/10">
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+    <header className="sticky top-0 z-40 bg-[#f7efdf]/80 backdrop-blur-md">
+      <nav className="max-w-[1180px] mx-auto px-4">
+        <div className="flex items-center justify-between h-[72px]">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <Sparkles className="w-6 h-6 text-[#24201B]" />
-            <span className="text-xl font-bold">AI Playground</span>
+            <Sparkles className="w-6 h-6 text-[#2b2925]" />
+            <span className="text-xl font-bold text-[#2b2925]">AI Playground</span>
           </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            <a href="#home" className="text-[#24201B] hover:text-[#24201B]/70 transition-colors">
+          {/* Center Navigation */}
+          <div className="hidden md:flex items-center gap-[58px]">
+            <a href="#home" className="text-[15px] text-[#2b2925] hover:text-[#2b2925]/70 transition-colors relative active">
               首页
+              {false && <span className="absolute bottom-[-8px] left-1/2 -translate-x-1/2 w-[26px] h-[4px] bg-[#ffd33d] rounded-[999px]"></span>}
             </a>
-            <a href="#about" className="text-[#24201B] hover:text-[#24201B]/70 transition-colors">
+            <a href="#about" className="text-[15px] text-[#2b2925] hover:text-[#2b2925]/70 transition-colors relative">
               关于
             </a>
-            <button className="btn-primary text-sm">
-              随机探索
-            </button>
           </div>
 
-          {/* Mobile menu button */}
-          <button
-            className="md:hidden p-2 rounded-lg hover:bg-[#24201B]/10 transition-colors"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
-
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-[#24201B]/10 animate-fade-in">
-            <div className="flex flex-col space-y-3">
-              <a href="#home" className="text-[#24201B] hover:text-[#24201B]/70 transition-colors py-2">
-                首页
-              </a>
-              <a href="#about" className="text-[#24201B] hover:text-[#24201B]/70 transition-colors py-2">
-                关于
-              </a>
-              <button className="btn-primary text-sm w-full">
-                随机探索
-              </button>
+          {/* Right Actions */}
+          <div className="flex items-center gap-3">
+            <button
+              className="capsule-btn flex items-center space-x-2"
+              onClick={onRandomPick}
+            >
+              <Sparkles className="w-4 h-4" />
+              <span>随机扭蛋</span>
+            </button>
+            <div className="w-10 h-10 rounded-full bg-[#2b2925]/10 flex items-center justify-center">
+              <User className="w-5 h-5 text-[#2b2925]" />
             </div>
           </div>
-        )}
+        </div>
       </nav>
     </header>
   );
