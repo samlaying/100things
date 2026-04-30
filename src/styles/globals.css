@@ -1,0 +1,169 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Ma+Shan+Zheng&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #FFF8E8;
+    color: #24201B;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  }
+
+  /* 纸张质感背景 */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("/textures/noise.png");
+    opacity: 0.08;
+    z-index: 0;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+  }
+}
+
+@layer components {
+  /* 卡片基础样式 */
+  .card {
+    position: relative;
+    border-radius: 28px;
+    padding: 1.5rem;
+    overflow: hidden;
+    box-shadow: 0 12px 28px rgba(35, 31, 25, 0.12);
+    transition: all 0.3s ease;
+    break-inside: avoid;
+    margin-bottom: 20px;
+  }
+
+  .card:hover {
+    box-shadow: 0 16px 32px rgba(35, 31, 25, 0.18);
+    transform: translateY(-6px) rotate(-1deg);
+  }
+
+  /* 瀑布流布局 */
+  .masonry {
+    column-count: 4;
+    column-gap: 20px;
+  }
+
+  @media (max-width: 1024px) {
+    .masonry {
+      column-count: 2;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .masonry {
+      column-count: 1;
+    }
+  }
+
+  /* 手写字体 */
+  .font-hand {
+    font-family: 'Ma Shan Zheng', cursive;
+  }
+
+  /* 按钮样式 */
+  .btn-primary {
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    background-color: #24201B;
+    color: #FFF8E8;
+  }
+
+  .btn-primary:hover {
+    background-color: rgba(36, 32, 27, 0.9);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transform: translateY(-0.25rem);
+  }
+
+  .btn-secondary {
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    background-color: #FFF8E8;
+    color: #24201B;
+    border: 2px solid #24201B;
+  }
+
+  .btn-secondary:hover {
+    background-color: #24201B;
+    color: #FFF8E8;
+  }
+
+  /* 标签样式 */
+  .tag {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(4px);
+  }
+
+  /* 模态框样式 */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+
+  .modal-content {
+    background-color: white;
+    border-radius: 28px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    max-width: 42rem;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    transform: all 0.3s ease;
+  }
+}
+
+@layer utilities {
+  /* 动画类 */
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .animate-shake {
+    animation: shake 0.5s ease-in-out;
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-5deg); }
+    75% { transform: rotate(5deg); }
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-in;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
