@@ -1,8 +1,18 @@
-import { useState } from 'react';
-import { X, Copy, Check, ArrowLeft } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Copy, Check } from 'lucide-react';
 
 const ThingDetailModal = ({ thing, onClose, onCopyPrompt }) => {
   const [copied, setCopied] = useState(false);
+
+  // 禁用页面滚动
+  useEffect(() => {
+    if (thing) {
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = '';
+      };
+    }
+  }, [thing]);
 
   if (!thing) return null;
 
@@ -19,109 +29,77 @@ const ThingDetailModal = ({ thing, onClose, onCopyPrompt }) => {
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div
-        className="modal-content relative animate-fade-in"
+      <article
+        className="modal animate-fade-in"
         onClick={(e) => e.stopPropagation()}
-        style={{
-          backgroundColor: thing.bgColor,
-          color: thing.textColor
-        }}
+        style={{ '--card-color': thing.bgColor }}
       >
-        {/* Close Button */}
-        <button
-          className="absolute top-4 right-4 p-2 rounded-full bg-black/10 hover:bg-black/20 transition-colors"
-          onClick={onClose}
-        >
-          <X className="w-5 h-5" />
-        </button>
+        {/* Modal Header */}
+        <header className="modal-header">
+          <button className="modal-close" onClick={onClose}>×</button>
 
-        {/* Back Button */}
-        <button
-          className="absolute top-4 left-4 p-2 rounded-full bg-black/10 hover:bg-black/20 transition-colors"
-          onClick={onClose}
-        >
-          <ArrowLeft className="w-5 h-5" />
-        </button>
-
-        <div className="p-8 pt-16">
-          {/* Number */}
-          <div className="font-hand text-6xl font-bold opacity-20 mb-4">
-            {thing.number}
+          <div className="modal-title-wrap">
+            <div className="modal-index">{thing.number}</div>
+            <span className="modal-tag">{thing.category}</span>
+            <h2 className="modal-title">{thing.title}</h2>
+            {thing.subtitle && (
+              <p className="modal-desc">{thing.subtitle}</p>
+            )}
           </div>
 
-          {/* Header */}
-          <div className="mb-6">
-            <div className="tag mb-3">
-              {thing.category}
-            </div>
-            <h2 className="text-3xl font-bold mb-2">
-              {thing.title}
-            </h2>
-            <p className="text-lg opacity-80">
-              {thing.subtitle}
-            </p>
-          </div>
-
-          {/* Description */}
-          <p className="text-lg mb-8 opacity-90">
-            {thing.description}
-          </p>
-
-          {/* Prompt Box */}
-          <div className="bg-white/30 backdrop-blur-sm rounded-2xl p-6 mb-8">
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="font-semibold">推荐提示词</h3>
-              <button
-                className="flex items-center space-x-2 px-4 py-2 bg-[#24201B] text-[#FFF8E8] rounded-full hover:bg-[#24201B]/80 transition-colors"
-                onClick={handleCopy}
-              >
-                {copied ? (
-                  <>
-                    <Check className="w-4 h-4" />
-                    <span>已复制</span>
-                  </>
-                ) : (
-                  <>
-                    <Copy className="w-4 h-4" />
-                    <span>复制</span>
-                  </>
-                )}
-              </button>
-            </div>
-            <p className="text-sm leading-relaxed opacity-90">
-              {thing.prompt}
-            </p>
-          </div>
-
-          {/* Steps */}
-          {thing.steps && thing.steps.length > 0 && (
-            <div className="mb-8">
-              <h3 className="font-semibold mb-4">使用步骤</h3>
-              <ol className="space-y-3">
-                {thing.steps.map((step, index) => (
-                  <li key={index} className="flex items-start space-x-3">
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#24201B] text-[#FFF8E8] flex items-center justify-center font-bold text-sm">
-                      {index + 1}
-                    </div>
-                    <p className="pt-1 opacity-90">{step}</p>
-                  </li>
-                ))}
-              </ol>
-            </div>
-          )}
-
-          {/* Image */}
           {thing.image && (
-            <div className="rounded-2xl overflow-hidden">
-              <img
-                src={thing.image}
-                alt={thing.title}
-                className="w-full h-auto object-cover"
-              />
+            <div className="modal-visual">
+              <img src={thing.image} alt="" />
             </div>
           )}
-        </div>
-      </div>
+        </header>
+
+        {/* Modal Body */}
+        <main className="modal-body">
+          <section className="modal-section">
+            <h3>推荐提示词</h3>
+            <p>{thing.prompt}</p>
+          </section>
+
+          {thing.steps && thing.steps.length > 0 && (
+            <section className="modal-section">
+              <h3>使用步骤</h3>
+              <div className="steps">
+                {thing.steps.map((step, index) => (
+                  <div key={index} className="step">
+                    <span className="step-num">{index + 1}</span>
+                    <p>{step}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {thing.description && (
+            <section className="modal-section">
+              <h3>详细说明</h3>
+              <p>{thing.description}</p>
+            </section>
+          )}
+        </main>
+
+        {/* Modal Footer */}
+        <footer className="modal-footer">
+          <button className="copy-btn" onClick={handleCopy}>
+            {copied ? (
+              <>
+                <Check className="w-4 h-4 mr-2" />
+                已复制
+              </>
+            ) : (
+              <>
+                <Copy className="w-4 h-4 mr-2" />
+                复制提示词
+              </>
+            )}
+          </button>
+        </footer>
+      </article>
     </div>
   );
 };
