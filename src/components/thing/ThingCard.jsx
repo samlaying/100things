@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Copy, Check, ChevronRight } from 'lucide-react';
+import { Copy, Check } from 'lucide-react';
 
 const ThingCard = ({ thing, onClick, onCopyPrompt }) => {
   const [copied, setCopied] = useState(false);
@@ -16,6 +16,13 @@ const ThingCard = ({ thing, onClick, onCopyPrompt }) => {
     }
   };
 
+  // 获取卡片布局类名对应的宽度
+  const getContentWidth = () => {
+    // 这里根据不同的卡片尺寸返回不同的宽度
+    // 由于我们不知道具体是哪种卡片类型，先返回默认值
+    return '52%';
+  };
+
   return (
     <div
       className="card cursor-pointer"
@@ -25,73 +32,70 @@ const ThingCard = ({ thing, onClick, onCopyPrompt }) => {
       }}
       onClick={() => onClick(thing)}
     >
-      {/* 编号圆圈 */}
-      <div className="absolute top-[24px] left-[24px] w-[34px] h-[34px] rounded-full bg-[#211d19] text-white flex items-center justify-center font-extrabold text-[15px] z-20">
+      {/* 编号圆圈 - 调整大小和位置 */}
+      <div className="card-index">
         {thing.number}
       </div>
 
-      {/* 卡片内容区域 */}
-      <div className="relative z-10 w-[55%] mt-[18px]">
-        {/* 分类标签 */}
-        <div className="tag mb-3">
+      {/* 卡片内容区域 - 固定宽度 */}
+      <div className="card-content" style={{ width: getContentWidth() }}>
+        {/* 分类标签 - 避免与编号重叠 */}
+        <span className="card-tag">
           {thing.category}
-        </div>
+        </span>
 
         {/* 标题 */}
-        <h3 className="text-[21px] leading-[1.35] mb-[12px] text-[#171411] font-bold">
+        <h3 className="card-title">
           {thing.title}
         </h3>
 
         {/* 描述 */}
-        <p className="text-[14px] leading-[1.65] text-[#312b25] mb-4">
+        <p className="card-desc">
           {thing.description}
         </p>
 
-        {/* 操作区域 */}
-        <div className="flex items-center justify-between">
-          <button
-            className="flex items-center space-x-1 text-sm font-medium opacity-70 hover:opacity-100 transition-opacity"
-            onClick={(e) => {
-              e.stopPropagation();
-              onClick(thing);
-            }}
-          >
-            <span>查看详情</span>
-            <ChevronRight className="w-4 h-4" />
-          </button>
+        {/* 查看详情按钮 */}
+        <button
+          className="card-link"
+          onClick={(e) => {
+            e.stopPropagation();
+            onClick(thing);
+          }}
+        >
+          查看详情 ›
+        </button>
 
-          <button
-            className="p-2 rounded-full bg-white/30 hover:bg-white/50 transition-colors backdrop-blur-sm"
-            onClick={handleCopy}
-            title="复制提示词"
-          >
-            {copied ? (
-              <Check className="w-4 h-4" />
-            ) : (
-              <Copy className="w-4 h-4" />
-            )}
-          </button>
-        </div>
+        {/* 复制按钮 */}
+        <button
+          className="card-copy"
+          onClick={handleCopy}
+          title="复制提示词"
+        >
+          {copied ? (
+            <Check className="w-4 h-4" />
+          ) : (
+            <Copy className="w-4 h-4" />
+          )}
+        </button>
       </div>
 
-      {/* 贴纸图片 - 固定在右侧 */}
+      {/* 贴纸图片容器 - 控制溢出 */}
       {thing.image && (
-        <div className="absolute right-[16px] bottom-[12px] w-[43%] max-h-[165px] z-1 object-contain">
+        <div className="card-visual">
           <img
             src={thing.image}
-            alt={thing.title}
-            className="w-full h-full object-contain"
+            alt=""
           />
         </div>
       )}
 
-      {/* 装饰贴纸 */}
+      {/* 装饰贴纸 - 修复alt和路径 */}
       {thing.stickers && thing.stickers.length > 0 && (
         <>
           {thing.stickers.map((sticker, index) => (
             <div
               key={index}
-              className="absolute w-16 h-16 opacity-60 animate-float z-0"
+              className="sticker"
               style={{
                 [index === 0 ? 'top' : 'bottom']: index === 0 ? '10px' : '10px',
                 [index === 0 ? 'left' : 'right']: index === 0 ? '10px' : '10px',
@@ -100,8 +104,7 @@ const ThingCard = ({ thing, onClick, onCopyPrompt }) => {
             >
               <img
                 src={sticker}
-                alt={`sticker-${index}`}
-                className="w-full h-full object-contain"
+                alt=""
               />
             </div>
           ))}
