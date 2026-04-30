@@ -4,23 +4,36 @@ const Hero = ({ onRandomPick }) => {
   return (
     <section className="relative h-[345px] mt-[35px] text-center">
       {/* 装饰贴纸 */}
-      <div className="absolute left-[20px] top-[115px] w-[145px] animate-float pointer-events-none">
-        <div className="w-full h-full bg-[#FFD84D]/20 rounded-full flex items-center justify-center">
-          <Sparkles className="w-16 h-16 text-[#FFD84D]" />
-        </div>
-      </div>
+      <img
+        className="absolute left-[20px] top-[115px] w-[145px] animate-float pointer-events-none"
+        src="/assets/components/component_02_robot_assistant.png"
+        alt=""
+        onError={(e) => { e.currentTarget.style.display = 'none'; }}
+      />
 
-      <div className="absolute right-[65px] top-[10px] w-[180px] animate-float pointer-events-none" style={{ animationDelay: '0.5s' }}>
-        <div className="w-full h-32 bg-[#9fe3b9]/30 rounded-lg transform -rotate-6 flex items-center justify-center">
-          <span className="font-hand text-3xl text-[#2b2925]">📝</span>
-        </div>
-      </div>
+      <img
+        className="absolute right-[65px] top-[10px] w-[180px] animate-float pointer-events-none"
+        src="/assets/components/component_01_sticky_note_ai_life.png"
+        alt=""
+        style={{ animationDelay: '0.5s' }}
+        onError={(e) => { e.currentTarget.style.display = 'none'; }}
+      />
 
-      <div className="absolute right-[95px] bottom-[20px] w-[82px] animate-float pointer-events-none" style={{ animationDelay: '1s' }}>
-        <div className="w-full h-16 bg-[#ffad63]/20 rounded-full flex items-center justify-center">
-          <span className="text-2xl">☕</span>
-        </div>
-      </div>
+      <img
+        className="absolute right-[95px] bottom-[20px] w-[82px] animate-float pointer-events-none"
+        src="/assets/components/component_03_coffee_cup.png"
+        alt=""
+        style={{ animationDelay: '1s' }}
+        onError={(e) => { e.currentTarget.style.display = 'none'; }}
+      />
+
+      <img
+        className="absolute left-[128px] top-[72px] w-[88px] animate-float pointer-events-none"
+        src="/assets/components/component_04_speech_bubble_convenient.png"
+        alt=""
+        style={{ animationDelay: '0.3s' }}
+        onError={(e) => { e.currentTarget.style.display = 'none'; }}
+      />
 
       {/* 主标题区域 */}
       <div className="relative z-10 max-w-[1180px] mx-auto px-4">
